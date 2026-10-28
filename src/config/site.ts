@@ -6,9 +6,7 @@ export const site = {
   description:
     "Catálogos, menús, sitios informativos y anuncios hechos solo con HTML, CSS y JavaScript. Rápidos, baratos de mantener y sin servidor que se caiga.",
   contact: {
-    whatsapp: "00000000000", // TODO: número en formato internacional, solo dígitos
-    telegram: "whiskerstack", // TODO: usuario de Telegram sin @
-    email: "hola@whiskerstack.example", // TODO
+    whatsapp: "5356293081", // formato internacional, solo dígitos
   },
 };
 

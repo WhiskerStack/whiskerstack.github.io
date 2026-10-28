@@ -1,16 +1,14 @@
 ---
 import Logo from "./Logo.astro";
-import { site, whatsappLink } from "../config/site";
+import { whatsappLink } from "../config/site";
 ---
 <section id="contacto" class="contact inv" aria-labelledby="contacto-title">
   <div class="wrap contact-grid">
     <div>
       <h2 id="contacto-title">Cuéntanos qué quieres publicar.</h2>
-      <p class="lede mute">Escríbenos por donde te quede más cómodo. Con saber qué vendes o informas y cuántos productos tienes, te damos una idea del trabajo.</p>
+      <p class="lede mute">Escríbenos por WhatsApp. Con saber qué vendes o informas y cuántos productos tienes, te damos una idea del trabajo.</p>
       <div class="cta-row">
         <a class="btn" href={whatsappLink("Hola, quiero cotizar un sitio web.")}>WhatsApp</a>
-        <a class="btn ghost" href={`https://t.me/${site.contact.telegram}`}>Telegram</a>
-        <a class="btn ghost" href={`mailto:${site.contact.email}`}>Correo</a>
       </div>
     </div>
     <Logo class="contact-mark" />
