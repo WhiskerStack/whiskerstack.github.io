@@ -5,7 +5,7 @@
     "url": "https://whiskerstack.github.io/ryoiki-tenkai-papercraft",
     "kind": "Catálogo de papercraft",
     "category": "Catálogo",
-    "description": "Papercrafts de anime hechos a mano, con buscador por número o nombre y orden por llegada.",
+    "description": "Papercraft de anime hechos a mano con mucho amor ✂️💜",
     "featured": true
   },
   {
@@ -14,7 +14,7 @@
     "url": "https://whiskerstack.github.io/lacaja",
     "kind": "Catálogo audiovisual",
     "category": "Catálogo",
-    "description": "Películas y series con portada destacada, biblioteca completa y búsqueda.",
+    "description": "Tu biblioteca de películas y series favoritas.",
     "featured": true,
     "capture": {
       "blurMedia": true
