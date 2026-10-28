@@ -1,0 +1,44 @@
+---
+import Logo from "./Logo.astro";
+---
+<li class="next">
+  <a class="slot" href="#contacto">
+    <Logo class="slot-mark" />
+    <span class="slot-title">Tu sitio puede ser el siguiente</span>
+    <span class="slot-cta">Cuéntanos tu idea</span>
+  </a>
+</li>
+
+<style>
+  .slot {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 0.7rem;
+    text-align: center;
+    aspect-ratio: 16 / 11.6;
+    border-radius: 16px;
+    border: 2px dashed color-mix(in srgb, var(--fg) 40%, var(--bg));
+    text-decoration: none;
+    padding: 1.5rem;
+    transition: border-color 0.2s;
+  }
+  .slot:hover {
+    border-color: var(--fg);
+  }
+  .slot :global(.slot-mark) {
+    width: 52px;
+    height: 55px;
+  }
+  .slot-title {
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .slot-cta {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+    font-weight: 600;
+  }
+</style>

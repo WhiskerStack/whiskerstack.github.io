@@ -1,0 +1,104 @@
+---
+import { Image } from "astro:assets";
+import { shotFor, hostOf, type Project } from "../lib/projects";
+interface Props {
+  project: Project;
+  headingLevel?: 2 | 3;
+}
+const { project: p, headingLevel = 3 } = Astro.props;
+const shot = shotFor(p.slug);
+const H = `h${headingLevel}`;
+const searchText = `${p.name} ${p.kind} ${p.category} ${p.description}`;
+---
+<li class="work" data-cat={p.category} data-text={searchText}>
+  <a class="frame" href={p.url} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+    <span class="chrome"><span class="url">{hostOf(p.url)}</span></span>
+    {shot ? (
+      <Image src={shot} alt="" widths={[480, 760]} sizes="(max-width: 700px) 92vw, 380px" loading="lazy" />
+    ) : (
+      <span class="noshot">{p.name}</span>
+    )}
+  </a>
+  <p class="kind mute">{p.kind}</p>
+  <H class="name">
+    <a href={p.url} target="_blank" rel="noopener">{p.name}<span class="sr-only"> (se abre en una pestaña nueva)</span></a>
+  </H>
+  <p class="mute">{p.description}</p>
+</li>
+
+<style>
+  .work {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+  }
+  .work[hidden] {
+    display: none;
+  }
+  .frame {
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid var(--fg);
+    background: var(--fg);
+    margin-bottom: 0.9rem;
+  }
+  .chrome {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding-inline: 9px;
+  }
+  .url {
+    flex: 1;
+    font-size: 0.74rem;
+    line-height: 20px;
+    padding-inline: 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--bg) 14%, var(--fg));
+    color: color-mix(in srgb, var(--bg) 80%, var(--fg));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .frame :global(img),
+  .noshot {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    object-position: top;
+    transition: transform 0.4s ease;
+  }
+  .noshot {
+    display: grid;
+    place-items: center;
+    color: var(--bg);
+    font-weight: 700;
+  }
+  .work:hover .frame :global(img) {
+    transform: scale(1.03);
+  }
+  .kind {
+    font-size: 0.92rem;
+  }
+  .name {
+    font-size: 1.35rem;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .name a {
+    text-decoration: none;
+  }
+  .name a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .frame :global(img) {
+      transition: none;
+    }
+  }
+</style>

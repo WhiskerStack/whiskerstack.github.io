@@ -2,7 +2,11 @@
 import Base from "../layouts/Base.astro";
 import Header from "../components/Header.astro";
 import Logo from "../components/Logo.astro";
-import CatalogDemo from "../components/CatalogDemo.astro";
+import ProjectStack from "../components/ProjectStack.astro";
+import Works from "../components/Works.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import Wave from "../components/Wave.astro";
 import { site, whatsappLink } from "../config/site";
 
 const services = [
@@ -114,8 +118,9 @@ const sample = {
         </svg>
       </div>
       <div class="hero-paper">
-        <CatalogDemo />
+        <ProjectStack />
       </div>
+      <Wave mode="cut-bottom" variant={2} class="hero-cut" />
     </section>
 
     <section id="servicios" class="block" aria-labelledby="servicios-title">
@@ -135,6 +140,12 @@ const sample = {
         </ul>
       </div>
     </section>
+
+    <div class="wrap"><Wave mode="line" variant={3} /></div>
+
+    <Works />
+
+    <Wave top="paper" bottom="ink" variant={1} />
 
     <section id="como-funciona" class="block inv" aria-labelledby="como-title">
       <div class="wrap">
@@ -180,20 +191,27 @@ const sample = {
       </div>
     </section>
 
+    <Wave top="ink" bottom="paper" variant={3} flip />
+
     <section id="alcance" class="fit" aria-labelledby="alcance-title">
       <div class="wrap fit-head">
         <h2 id="alcance-title">Qué cabe en un sitio sin servidor</h2>
         <p class="lede mute">Más de lo que parece, y no todo. Si tu proyecto necesita algo de la columna oscura, te lo decimos antes de empezar.</p>
       </div>
       <div class="fit-grid">
+        <Wave mode="cut-top" variant={1} flip />
         <div class="fit-yes">
           <h3>Sí cabe</h3>
           <ul>{fits.map((f) => <li>{f}</li>)}</ul>
         </div>
         <div class="fit-no inv">
+          <svg class="fit-seam" viewBox="0 0 60 100" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M60 0H30C-2 14 -2 36 30 50C62 64 62 86 30 100H60Z" />
+          </svg>
           <h3>Necesita un servidor</h3>
           <ul>{misfits.map((f) => <li>{f}</li>)}</ul>
         </div>
+        <Wave mode="cut-bottom" variant={3} />
       </div>
     </section>
 
@@ -214,6 +232,7 @@ const sample = {
     </section>
 
     <section id="preguntas" class="block faq-block" aria-labelledby="faq-title">
+      <div class="wrap"><Wave mode="line" variant={2} /></div>
       <div class="wrap faq-wrap">
         <h2 id="faq-title">Preguntas frecuentes</h2>
         <div class="faq">
@@ -227,33 +246,16 @@ const sample = {
       </div>
     </section>
 
-    <section id="contacto" class="contact inv" aria-labelledby="contacto-title">
-      <div class="wrap contact-grid">
-        <div>
-          <h2 id="contacto-title">Cuéntanos qué quieres publicar.</h2>
-          <p class="lede mute">Escríbenos por donde te quede más cómodo. Con saber qué vendes o informas y cuántos productos tienes, te damos una idea del trabajo.</p>
-          <div class="cta-row">
-            <a class="btn" href={whatsappLink("Hola, quiero cotizar un sitio web.")}>WhatsApp</a>
-            <a class="btn ghost" href={`https://t.me/${site.contact.telegram}`}>Telegram</a>
-            <a class="btn ghost" href={`mailto:${site.contact.email}`}>Correo</a>
-          </div>
-        </div>
-        <Logo class="contact-mark" />
-      </div>
-    </section>
+    <Wave top="paper" bottom="ink" variant={2} flip />
+    <Contact />
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap foot">
-      <span class="foot-brand"><Logo class="foot-mark" /> {site.name}</span>
-      <span class="mute">© {new Date().getFullYear()} {site.name}. Este sitio tampoco tiene servidor.</span>
-    </div>
-  </footer>
+  <Footer />
 </Base>
 
 <style>
   /* ---------- Portada ---------- */
   .hero {
+    position: relative;
     display: grid;
     grid-template-columns: 1.08fr 1fr;
     min-height: min(calc(100svh - 76px), 860px);
@@ -275,12 +277,6 @@ const sample = {
   .hero-copy .lede {
     color: color-mix(in srgb, var(--fg) 78%, var(--bg));
   }
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 0.4rem;
-  }
   .seam {
     position: absolute;
     fill: var(--bg);
@@ -296,6 +292,7 @@ const sample = {
     display: none;
   }
   .hero-paper {
+    overflow-x: clip;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -436,20 +433,28 @@ const sample = {
     max-width: 48rem;
   }
   .fit-grid {
+    position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
   .fit-yes,
   .fit-no {
-    padding: clamp(2.5rem, 6vw, 5rem) var(--gutter);
+    padding: clamp(5rem, 10vw, 8rem) var(--gutter);
   }
   .fit-yes {
     padding-left: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
-    border-top: 2px solid var(--fg);
   }
   .fit-no {
+    position: relative;
     padding-right: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
-    border-top-left-radius: 48px;
+  }
+  .fit-seam {
+    position: absolute;
+    top: 0;
+    left: calc(-1 * clamp(36px, 5vw, 72px) + 1px);
+    width: clamp(36px, 5vw, 72px);
+    height: 100%;
+    fill: var(--bg);
   }
   .fit h3 {
     font-size: clamp(1.5rem, 2.6vw, 2rem);
@@ -506,8 +511,7 @@ const sample = {
     grid-template-columns: 1fr 1.6fr;
     gap: 2rem 4rem;
     align-items: start;
-    padding-top: clamp(4rem, 8vw, 6rem);
-    border-top: 2px solid var(--fg);
+    padding-top: clamp(3rem, 6vw, 4.5rem);
   }
   .faq details {
     border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, var(--bg));
@@ -545,58 +549,6 @@ const sample = {
     padding-bottom: 1.3rem;
   }
 
-  .contact {
-    padding-block: clamp(4.5rem, 10vw, 8rem);
-    border-top-right-radius: clamp(48px, 8vw, 120px);
-  }
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 3rem;
-    align-items: center;
-  }
-  .contact-grid > div {
-    display: grid;
-    gap: 1.4rem;
-  }
-  .contact .mute {
-    color: color-mix(in srgb, var(--fg) 72%, var(--bg));
-  }
-  .contact :global(.contact-mark) {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    justify-self: end;
-  }
-
-  .site-footer {
-    background: var(--ink);
-    color: var(--paper);
-  }
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding-block: 2rem;
-    border-top: 1px solid color-mix(in srgb, var(--paper) 20%, var(--ink));
-    font-size: 0.95rem;
-  }
-  .site-footer .mute {
-    color: color-mix(in srgb, var(--paper) 65%, var(--ink));
-  }
-  .foot-brand {
-    display: inline-flex;
-    gap: 0.5rem;
-    align-items: center;
-    font-weight: 700;
-  }
-  .foot-brand :global(.foot-mark) {
-    width: 22px;
-    height: 23px;
-  }
-
   /* ---------- Pantallas medianas y móviles ---------- */
   @media (max-width: 960px) {
     .hero {
@@ -607,6 +559,9 @@ const sample = {
       padding: 3.5rem var(--gutter) 4.5rem;
     }
     .seam-v {
+      display: none;
+    }
+    .hero :global(.hero-cut) {
       display: none;
     }
     .seam-h {
@@ -641,30 +596,20 @@ const sample = {
     .fit-no {
       padding-inline: var(--gutter);
     }
-    .fit-no {
-      border-top-left-radius: 36px;
-      border-top-right-radius: 36px;
+    .fit-yes {
+      padding-bottom: 2rem;
+    }
+    .fit-seam {
+      display: none;
     }
     .faq-wrap {
       grid-template-columns: 1fr;
-    }
-    .contact-grid {
-      grid-template-columns: 1fr;
-    }
-    .contact :global(.contact-mark) {
-      max-width: 160px;
-      justify-self: start;
-      order: -1;
     }
   }
   @media (max-width: 560px) {
     .steps,
     .reasons {
       grid-template-columns: 1fr;
-    }
-    .cta-row .btn {
-      width: 100%;
-      justify-content: center;
     }
   }
 </style>

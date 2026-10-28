@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "ryoiki-tenkai-papercraft",
+    "name": "Ryoiki Tenkai",
+    "url": "https://whiskerstack.github.io/ryoiki-tenkai-papercraft",
+    "kind": "Catálogo de papercraft",
+    "category": "Catálogo",
+    "description": "Papercrafts de anime hechos a mano, con buscador por número o nombre y orden por llegada.",
+    "featured": true
+  },
+  {
+    "slug": "lacaja",
+    "name": "La Caja",
+    "url": "https://whiskerstack.github.io/lacaja",
+    "kind": "Catálogo audiovisual",
+    "category": "Catálogo",
+    "description": "Películas y series con portada destacada, biblioteca completa y búsqueda.",
+    "featured": true,
+    "capture": {
+      "blurMedia": true
+    }
+  }
+]

@@ -1,0 +1,95 @@
+---
+/**
+ * Ondas entre secciones.
+ *
+ * mode="divider" (por defecto): franja entre dos secciones. `top` es el color
+ *   de la sección de arriba y `bottom` el de la de abajo.
+ * mode="cut-top" | "cut-bottom": se superpone al borde de una sección
+ *   (el padre necesita position: relative) y "recorta" ese borde con el color
+ *   de fondo del padre. Sirve cuando el borde mezcla dos colores (portada,
+ *   columnas sí/no).
+ * mode="line": línea ondulada fina, para separar dentro del mismo color.
+ */
+interface Props {
+  mode?: "divider" | "cut-top" | "cut-bottom" | "line";
+  top?: "ink" | "paper";
+  bottom?: "ink" | "paper";
+  variant?: 1 | 2 | 3;
+  flip?: boolean;
+  class?: string;
+}
+const { mode = "divider", top = "paper", bottom = "ink", variant = 1, flip = false, class: className } = Astro.props;
+
+// Bordes en un lienzo de 1440×100. Cada uno empieza en x=0 y termina en x=1440.
+const edges = {
+  1: "M0 62C220 8 470 8 720 48S1210 98 1440 38",
+  2: "M0 30C300 96 620 96 900 52S1290 4 1440 58",
+  3: "M0 70C380 2 1060 98 1440 28",
+};
+const edge = edges[variant];
+// Relleno de la parte de abajo del borde / de la parte de arriba.
+const fillBelow = `${edge}V106H0Z`; // se pasa del lienzo para tapar la junta con la sección siguiente
+const fillAbove = `${edge}V-6H0Z`;
+---
+{mode === "line" ? (
+  <svg class:list={["wave-line", className, { flip }]} viewBox="0 0 1440 100" preserveAspectRatio="none" aria-hidden="true">
+    <path d={edge} fill="none" vector-effect="non-scaling-stroke" />
+  </svg>
+) : mode === "divider" ? (
+  <div class:list={["wave", className, { flip }]} style={`background: var(--${top})`} aria-hidden="true">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d={fillBelow} style={`fill: var(--${bottom})`} />
+    </svg>
+  </div>
+) : (
+  <svg
+    class:list={["wave-cut", mode, className, { flip }]}
+    viewBox="0 0 1440 100"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    <path d={mode === "cut-bottom" ? fillBelow : fillAbove} />
+  </svg>
+)}
+
+<style>
+  .wave {
+    display: block;
+    line-height: 0;
+    margin-block: -1px; /* evita la rayita de 1px entre la onda y la sección */
+    position: relative;
+    z-index: 1;
+  }
+  .wave svg {
+    display: block;
+    overflow: visible;
+    width: 100%;
+    height: clamp(36px, 6vw, 96px);
+  }
+  .wave-cut {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: clamp(28px, 4.5vw, 72px);
+    fill: var(--bg);
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+  }
+  .wave-cut.cut-bottom {
+    bottom: -1px;
+  }
+  .wave-cut.cut-top {
+    top: -1px;
+  }
+  .wave-line {
+    display: block;
+    width: 100%;
+    height: clamp(18px, 2.5vw, 32px);
+    stroke: var(--fg);
+    stroke-width: 2px;
+  }
+  .flip {
+    transform: scaleX(-1);
+  }
+</style>

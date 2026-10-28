@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import { site } from "../config/site";
+import { href } from "../lib/url";
 interface Props {
   title?: string;
   description?: string;
@@ -14,15 +15,15 @@ const { title = `${site.name} — Sitios web sin servidor`, description = site.d
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href={href("favicon.ico")} sizes="32x32" />
+    <link rel="icon" href={href("favicon.svg")} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={href("apple-touch-icon.png")} />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content={new URL("/og.png", site.url).href} />
+    <meta property="og:image" content={new URL(href("og.png"), site.url).href} />
     <script is:inline>
       try {
         const t = localStorage.getItem("ws-theme");

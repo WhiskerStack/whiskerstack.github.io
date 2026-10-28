@@ -1,0 +1,47 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import NextSlot from "./NextSlot.astro";
+import { projects, LANDING_MAX } from "../lib/projects";
+import { href } from "../lib/url";
+
+// 8 trabajos + el hueco "Tu sitio puede ser el siguiente" = cuadrícula de 9.
+// Si hay más de 8, el resto se ve en /trabajos.
+const shown = projects.slice(0, LANDING_MAX);
+const hasMore = projects.length > LANDING_MAX;
+---
+<section id="trabajos" class="works" aria-labelledby="trabajos-title">
+  <div class="wrap">
+    <div class="works-head">
+      <h2 id="trabajos-title">Trabajos publicados</h2>
+      <p class="lede mute">Sitios en línea que puedes abrir y probar ahora. Ninguno tiene servidor detrás.</p>
+    </div>
+
+    <ul class="works-grid">
+      {shown.map((p) => <ProjectCard project={p} />)}
+      <NextSlot />
+    </ul>
+
+    {hasMore && (
+      <div class="more">
+        <a class="btn" href={href("trabajos/")}>Ver los {projects.length} trabajos</a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .works {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(4.5rem, 10vw, 8rem);
+  }
+  .works-head {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    max-width: 48rem;
+  }
+  .more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+</style>

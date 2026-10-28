@@ -1,0 +1,200 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Wave from "../components/Wave.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import NextSlot from "../components/NextSlot.astro";
+import Contact from "../components/Contact.astro";
+import Footer from "../components/Footer.astro";
+import { projects, categories } from "../lib/projects";
+import { href } from "../lib/url";
+import { site } from "../config/site";
+
+const total = projects.length;
+---
+<Base
+  title={`Trabajos publicados — ${site.name}`}
+  description={`Los ${total} sitios que ha publicado ${site.name}: catálogos, menús y sitios informativos que funcionan sin servidor.`}
+>
+  <Header />
+  <main>
+    <section class="top inv" aria-labelledby="page-title">
+      <div class="wrap top-inner">
+        <a class="back" href={href()}>Volver al inicio</a>
+        <h1 id="page-title">Trabajos publicados</h1>
+        <p class="lede mute">{total === 1 ? "1 sitio en línea" : `${total} sitios en línea`}. Ábrelos y pruébalos: ninguno tiene servidor detrás.</p>
+      </div>
+    </section>
+    <Wave top="ink" bottom="paper" variant={1} />
+
+    <section class="list" aria-label="Lista de trabajos" data-filter>
+      <div class="wrap">
+        <div class="controls">
+          <label class="sr-only" for="q">Buscar trabajos</label>
+          <input id="q" class="search" type="search" placeholder="Buscar por nombre o tipo" autocomplete="off" />
+          {categories.length > 1 && (
+            <div class="chips" role="group" aria-label="Filtrar por categoría">
+              <button type="button" class="chip" data-cat="" aria-pressed="true">Todos <span class="count">{total}</span></button>
+              {categories.map((c) => (
+                <button type="button" class="chip" data-cat={c.name} aria-pressed="false">
+                  {c.name} <span class="count">{c.count}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <p class="status mute" aria-live="polite" data-status>Mostrando {total} de {total}</p>
+
+        <ul class="works-grid">
+          {projects.map((p) => <ProjectCard project={p} headingLevel={2} />)}
+          <NextSlot />
+        </ul>
+
+        <div class="empty" hidden data-empty>
+          <p>Ningún trabajo coincide con la búsqueda.</p>
+          <button type="button" class="btn ghost" data-reset>Quitar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <Wave top="paper" bottom="ink" variant={2} flip />
+    <Contact />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .top {
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .top-inner {
+    display: grid;
+    gap: 1.1rem;
+  }
+  .back {
+    justify-self: start;
+    font-weight: 600;
+    text-underline-offset: 0.3em;
+  }
+  .top .mute {
+    color: color-mix(in srgb, var(--fg) 75%, var(--bg));
+  }
+  .list {
+    padding-block: clamp(2.5rem, 5vw, 4rem) clamp(4.5rem, 10vw, 8rem);
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .search {
+    flex: 1 1 280px;
+    max-width: 420px;
+    font: inherit;
+    padding: 0.75em 1.2em;
+    border-radius: 999px;
+    border: 2px solid var(--fg);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .search::placeholder {
+    color: color-mix(in srgb, var(--fg) 50%, var(--bg));
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .chip {
+    font: inherit;
+    font-weight: 500;
+    padding: 0.45em 1em;
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in srgb, var(--fg) 30%, var(--bg));
+    background: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .count {
+    opacity: 0.6;
+    font-variant-numeric: tabular-nums;
+    margin-left: 0.2em;
+  }
+  .status {
+    font-size: 0.95rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .empty {
+    display: grid;
+    justify-items: start;
+    gap: 1rem;
+    padding-block: 1rem 2rem;
+    font-size: 1.15rem;
+  }
+  .empty[hidden] {
+    display: none;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-filter]");
+  if (root) {
+    const q = root.querySelector<HTMLInputElement>("#q")!;
+    const chips = [...root.querySelectorAll<HTMLButtonElement>(".chip")];
+    const cards = [...root.querySelectorAll<HTMLElement>("[data-cat][data-text]")];
+    const status = root.querySelector<HTMLElement>("[data-status]")!;
+    const empty = root.querySelector<HTMLElement>("[data-empty]")!;
+    const slot = root.querySelector<HTMLElement>(".next");
+    const norm = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+    const texts = cards.map((c) => norm(c.dataset.text!));
+    let cat = "";
+
+    const apply = () => {
+      const terms = norm(q.value.trim()).split(/\s+/).filter(Boolean);
+      let shown = 0;
+      cards.forEach((c, i) => {
+        const ok = (!cat || c.dataset.cat === cat) && terms.every((t) => texts[i].includes(t));
+        c.hidden = !ok;
+        if (ok) shown++;
+      });
+      chips.forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cat === cat)));
+      status.textContent = `Mostrando ${shown} de ${cards.length}`;
+      empty.hidden = shown > 0;
+      if (slot) slot.hidden = shown === 0;
+
+      // El filtro queda en la URL para poder compartirlo.
+      const url = new URL(location.href);
+      q.value.trim() ? url.searchParams.set("q", q.value.trim()) : url.searchParams.delete("q");
+      cat ? url.searchParams.set("c", cat) : url.searchParams.delete("c");
+      history.replaceState(null, "", url);
+    };
+
+    const params = new URLSearchParams(location.search);
+    q.value = params.get("q") ?? "";
+    const c = params.get("c") ?? "";
+    cat = chips.some((b) => b.dataset.cat === c) ? c : "";
+
+    q.addEventListener("input", apply);
+    chips.forEach((b) =>
+      b.addEventListener("click", () => {
+        cat = b.dataset.cat!;
+        apply();
+      }),
+    );
+    root.querySelector("[data-reset]")!.addEventListener("click", () => {
+      q.value = "";
+      cat = "";
+      apply();
+      q.focus();
+    });
+    apply();
+  }
+</script>

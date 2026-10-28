@@ -1,16 +1,18 @@
 ---
 import Logo from "./Logo.astro";
 import { site } from "../config/site";
+import { href } from "../lib/url";
 const links = [
-  { href: "#servicios", label: "Servicios" },
-  { href: "#como-funciona", label: "Cómo funciona" },
-  { href: "#alcance", label: "Qué cabe" },
-  { href: "#preguntas", label: "Preguntas" },
+  { href: href("#servicios"), label: "Servicios" },
+  { href: href("#trabajos"), label: "Trabajos" },
+  { href: href("#como-funciona"), label: "Cómo funciona" },
+  { href: href("#alcance"), label: "Qué cabe" },
+  { href: href("#preguntas"), label: "Preguntas" },
 ];
 ---
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/" aria-label={`${site.name}, inicio`}>
+    <a class="brand" href={href()} aria-label={`${site.name}, inicio`}>
       <Logo class="brand-mark" />
       <span>{site.name}</span>
     </a>

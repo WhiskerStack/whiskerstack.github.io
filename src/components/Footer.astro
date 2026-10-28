@@ -1,0 +1,39 @@
+---
+import Logo from "./Logo.astro";
+import { site } from "../config/site";
+---
+<footer class="site-footer">
+  <div class="wrap foot">
+    <span class="foot-brand"><Logo class="foot-mark" /> {site.name}</span>
+    <span class="mute">© {new Date().getFullYear()} {site.name}. Este sitio tampoco tiene servidor.</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 2rem;
+    font-size: 0.95rem;
+  }
+  .site-footer .mute {
+    color: color-mix(in srgb, var(--paper) 65%, var(--ink));
+  }
+  .foot-brand {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-weight: 700;
+  }
+  .foot-brand :global(.foot-mark) {
+    width: 22px;
+    height: 23px;
+  }
+</style>

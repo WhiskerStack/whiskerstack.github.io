@@ -145,6 +145,32 @@ a {
   color: var(--bg);
 }
 
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+}
+@media (max-width: 560px) {
+  .cta-row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Cuadrícula de trabajos (portada y /trabajos) */
+.works-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+}
+.works-grid > [hidden] {
+  display: none;
+}
+
 :focus-visible {
   outline: 3px solid var(--eye);
   outline-offset: 3px;
