@@ -22,6 +22,22 @@ export const HERO_MAX = 5;
 export const LANDING_MAX = 8;
 
 export const projects = data as Project[];
+
+// En GitHub Pages, un repo con el mismo nombre que una página de la landing la tapa
+// sin avisar (whiskerstack.github.io/trabajos). Aquí se corta el build si pasa.
+const pageRoutes = Object.keys(import.meta.glob("../pages/**/*.{astro,md,mdx}"))
+  .map((f) => f.replace(/^\.\.\/pages\//, "").split("/")[0].replace(/\.\w+$/, "").toLowerCase())
+  .filter((r) => r && r !== "index");
+for (const p of projects) {
+  const m = p.url.match(/^https?:\/\/whiskerstack\.github\.io\/([^/?#]+)/i);
+  const segment = m?.[1].toLowerCase();
+  if (segment && pageRoutes.includes(segment)) {
+    throw new Error(
+      `El proyecto "${p.slug}" (${p.url}) usa la ruta /${segment}/, que ya es una página de la landing. ` +
+        `Renombra el repo del proyecto o la página en src/pages/.`,
+    );
+  }
+}
 export const featured = projects.filter((p) => p.featured).slice(0, HERO_MAX);
 
 /** Categorías en orden de aparición, con cuántos trabajos tiene cada una. */

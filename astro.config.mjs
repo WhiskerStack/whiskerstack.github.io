@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 
-// TODO: cambia `site` por tu dominio real (se usa en las URLs absolutas y el og:image).
+// Repo: WhiskerStack/whiskerstack.github.io → se publica en la raíz, sin `base`.
+// Si algún día usas un dominio propio, cambia `site` (y src/config/site.ts).
 export default defineConfig({
-  site: "https://whiskerstack.example",
+  site: "https://whiskerstack.github.io",
 });
