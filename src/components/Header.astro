@@ -31,6 +31,18 @@ const links = [
 </header>
 
 <style>
+  /* Header fijo: sticky reserva su espacio (no hay que compensar con padding en el body). */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50; /* por encima de las ondas (.wave-cut usa z-index: 2) */
+    background: var(--bg);
+  }
+  /* Línea de 1px solo cuando está pegado; con inset no cambia la altura ni da saltos. */
+  .site-header.stuck {
+    box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--fg) 16%, var(--bg));
+  }
+
   .bar {
     display: flex;
     align-items: center;
@@ -134,4 +146,12 @@ const links = [
       localStorage.setItem("ws-theme", next);
     } catch {}
   });
+
+  // Marca el header como "pegado" para dibujar la línea inferior.
+  const header = document.querySelector<HTMLElement>(".site-header");
+  if (header) {
+    const onScroll = () => header.classList.toggle("stuck", window.scrollY > 4);
+    onScroll();
+    addEventListener("scroll", onScroll, { passive: true });
+  }
 </script>

@@ -46,6 +46,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* El header fijo mide 76px: deja aire para que los #ancla no queden tapados. */
+  scroll-padding-top: calc(76px + 1rem);
   -webkit-text-size-adjust: 100%;
 }
 
