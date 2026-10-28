@@ -1,11 +1,670 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Logo from "../components/Logo.astro";
+import CatalogDemo from "../components/CatalogDemo.astro";
+import { site, whatsappLink } from "../config/site";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const services = [
+  {
+    name: "Catálogos",
+    text: "Productos con fotos, precios, categorías y buscador. Los pedidos te llegan por WhatsApp ya escritos.",
+    for: "Tiendas, artesanos, distribuidores",
+  },
+  {
+    name: "Menús",
+    text: "Carta digital con platos, precios y horario, lista para imprimir en un código QR sobre la mesa.",
+    for: "Restaurantes, cafeterías, dulcerías",
+  },
+  {
+    name: "Sitios informativos",
+    text: "Quiénes son, qué ofrecen, dónde están y cómo contactarlos, en una página o en varias.",
+    for: "Profesionales, talleres, academias",
+  },
+  {
+    name: "Anuncios y campañas",
+    text: "Una página para una oferta, un evento o un lanzamiento, que puede retirarse sola al terminar.",
+    for: "Eventos, promociones, alquileres",
+  },
+];
+
+const steps = [
+  { t: "Nos cuentas qué necesitas", d: "Qué vendes o informas, cuántos productos tienes y qué fotos hay." },
+  { t: "Diseñamos y armamos", d: "Te enviamos una versión navegable para revisar antes de publicar." },
+  { t: "Publicamos", d: "En un hosting estático, con tu dominio si ya tienes uno." },
+  { t: "Actualizamos cuando lo pidas", d: "Nos mandas el cambio, sea un precio o un producto nuevo, y lo publicamos." },
+];
+
+const fits = [
+  "Catálogos con buscador y filtros",
+  "Carrito que arma el pedido para WhatsApp o Telegram",
+  "Galerías de fotos y video",
+  "Mapa, horarios y datos de contacto",
+  "Varios idiomas",
+  "Seguir funcionando sin conexión después de la primera visita",
+];
+const misfits = [
+  "Cuentas de usuario e inicio de sesión",
+  "Cobros en línea dentro del sitio",
+  "Inventario que se descuenta solo",
+  "Reservas con disponibilidad en tiempo real",
+  "Datos que cambian a cada minuto",
+];
+
+const reasons = [
+  { t: "Carga rápido", d: "Las páginas ya están hechas antes de que alguien las pida. Con datos móviles o una conexión lenta, la diferencia se nota." },
+  { t: "Cuesta poco mantener", d: "El hosting estático suele ser gratis o muy barato. No pagas un servidor encendido las 24 horas." },
+  { t: "Hay menos que pueda fallar", d: "Sin base de datos ni panel de administración no hay contraseñas que robar ni parches de seguridad pendientes." },
+  { t: "El sitio es tuyo", d: "Te entregamos el código. Puedes llevarlo a otro hosting cuando quieras, sin pedirle permiso a nadie." },
+];
+
+const faqs = [
+  {
+    q: "¿Cómo recibo pedidos si no hay servidor?",
+    a: "El carrito arma un mensaje con los productos y el total y lo abre en WhatsApp o Telegram. Tú confirmas y cobras como ya lo haces hoy.",
+  },
+  {
+    q: "¿Puedo cambiar los precios yo mismo?",
+    a: "Los datos están en un archivo de texto separado del diseño. Si prefieres no tocarlo, nos mandas los cambios y los publicamos nosotros.",
+  },
+  {
+    q: "¿Y el formulario de contacto?",
+    a: "Lo sustituimos por botones que abren WhatsApp, Telegram o el correo con el mensaje ya empezado. Llega directo a ti, sin intermediarios.",
+  },
+  {
+    q: "¿Necesito un dominio propio?",
+    a: "No es obligatorio. El sitio funciona con la dirección gratuita del hosting, y si después compras un dominio lo conectamos.",
+  },
+  {
+    q: "¿Qué pasa si más adelante necesito cuentas o pagos en línea?",
+    a: "Eso ya requiere un servidor y queda fuera de lo que hacemos. Si tu proyecto va hacia allí, te lo decimos antes de empezar.",
+  },
+];
+
+const sample = {
+  id: "c1",
+  name: "Café molido 250 g",
+  category: "Despensa",
+  price: 4.5,
+};
 ---
+<Base>
+  <Header />
 
-<Layout>
-	<Welcome />
-</Layout>
+  <main>
+    <!-- Portada: dos mitades, como los dos gatos del logo -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-ink inv">
+        <div class="hero-copy">
+          <h1 id="hero-title">Tu catálogo en línea, sin servidor detrás.</h1>
+          <p class="lede">
+            Hacemos catálogos, menús, sitios informativos y anuncios con HTML, CSS y JavaScript.
+            Cargan rápido aunque la conexión sea mala, cuestan casi nada mantener y no tienen base de datos que se caiga.
+          </p>
+          <div class="cta-row">
+            <a class="btn" href={whatsappLink("Hola, quiero cotizar un sitio web.")}>Pedir cotización por WhatsApp</a>
+            <a class="btn ghost" href="#como-funciona">Ver cómo funciona</a>
+          </div>
+        </div>
+        <svg class="seam seam-v" viewBox="0 0 60 100" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0H30C62 14 62 36 30 50C-2 64 -2 86 30 100H0Z" />
+        </svg>
+        <svg class="seam seam-h" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 0V20C14 -4 36 -4 50 20C64 44 86 44 100 20V0Z" />
+        </svg>
+      </div>
+      <div class="hero-paper">
+        <CatalogDemo />
+      </div>
+    </section>
+
+    <section id="servicios" class="block" aria-labelledby="servicios-title">
+      <div class="wrap">
+        <div class="head">
+          <h2 id="servicios-title">Qué hacemos</h2>
+          <p class="lede mute">Sitios para mostrar, informar y vender por mensaje. Todo lo que se pueda resolver en el navegador.</p>
+        </div>
+        <ul class="services">
+          {services.map((s) => (
+            <li>
+              <h3>{s.name}</h3>
+              <p>{s.text}</p>
+              <p class="for mute">Para {s.for.toLowerCase()}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="block inv" aria-labelledby="como-title">
+      <div class="wrap">
+        <div class="head">
+          <h2 id="como-title">Tus datos viven en un archivo.</h2>
+          <p class="lede mute">
+            El diseño y los datos van por separado. Productos, precios y textos están en un archivo aparte;
+            cuando cambia, el sitio se genera de nuevo y se publica. No hay panel de administración que mantener.
+          </p>
+        </div>
+
+        <div class="transform" aria-label="Ejemplo: un producto en el archivo de datos y cómo se ve en el sitio">
+          <figure class="file">
+            <figcaption class="mute">productos.json</figcaption>
+            <pre><code>{JSON.stringify(sample, null, 2)}</code></pre>
+          </figure>
+          <svg class="arrow" viewBox="0 0 80 24" aria-hidden="true">
+            <path d="M2 12C22 2 42 22 70 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M62 5L72 12L62 19" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <figure class="card">
+            <figcaption class="mute">En tu sitio</figcaption>
+            <div class="card-body">
+              <div class="photo" aria-hidden="true"><Logo class="photo-mark" /></div>
+              <div>
+                <p class="card-name">{sample.name}</p>
+                <p class="mute">{sample.category}</p>
+              </div>
+              <p class="card-price">${sample.price.toFixed(2)}</p>
+            </div>
+          </figure>
+        </div>
+
+        <ol class="steps">
+          {steps.map((s, i) => (
+            <li>
+              <span class="num" aria-hidden="true">{i + 1}</span>
+              <h3>{s.t}</h3>
+              <p class="mute">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section id="alcance" class="fit" aria-labelledby="alcance-title">
+      <div class="wrap fit-head">
+        <h2 id="alcance-title">Qué cabe en un sitio sin servidor</h2>
+        <p class="lede mute">Más de lo que parece, y no todo. Si tu proyecto necesita algo de la columna oscura, te lo decimos antes de empezar.</p>
+      </div>
+      <div class="fit-grid">
+        <div class="fit-yes">
+          <h3>Sí cabe</h3>
+          <ul>{fits.map((f) => <li>{f}</li>)}</ul>
+        </div>
+        <div class="fit-no inv">
+          <h3>Necesita un servidor</h3>
+          <ul>{misfits.map((f) => <li>{f}</li>)}</ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="block" aria-labelledby="por-que-title">
+      <div class="wrap">
+        <div class="head">
+          <h2 id="por-que-title">Por qué sin servidor</h2>
+        </div>
+        <div class="reasons">
+          {reasons.map((r) => (
+            <div>
+              <h3>{r.t}</h3>
+              <p class="mute">{r.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="preguntas" class="block faq-block" aria-labelledby="faq-title">
+      <div class="wrap faq-wrap">
+        <h2 id="faq-title">Preguntas frecuentes</h2>
+        <div class="faq">
+          {faqs.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p class="mute">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="contacto" class="contact inv" aria-labelledby="contacto-title">
+      <div class="wrap contact-grid">
+        <div>
+          <h2 id="contacto-title">Cuéntanos qué quieres publicar.</h2>
+          <p class="lede mute">Escríbenos por donde te quede más cómodo. Con saber qué vendes o informas y cuántos productos tienes, te damos una idea del trabajo.</p>
+          <div class="cta-row">
+            <a class="btn" href={whatsappLink("Hola, quiero cotizar un sitio web.")}>WhatsApp</a>
+            <a class="btn ghost" href={`https://t.me/${site.contact.telegram}`}>Telegram</a>
+            <a class="btn ghost" href={`mailto:${site.contact.email}`}>Correo</a>
+          </div>
+        </div>
+        <Logo class="contact-mark" />
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap foot">
+      <span class="foot-brand"><Logo class="foot-mark" /> {site.name}</span>
+      <span class="mute">© {new Date().getFullYear()} {site.name}. Este sitio tampoco tiene servidor.</span>
+    </div>
+  </footer>
+</Base>
+
+<style>
+  /* ---------- Portada ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    min-height: min(calc(100svh - 76px), 860px);
+  }
+  .hero-ink {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding-block: clamp(3rem, 8vw, 6rem);
+    padding-left: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+    padding-right: clamp(2rem, 5vw, 5rem);
+    z-index: 1;
+  }
+  .hero-copy {
+    display: grid;
+    gap: 1.6rem;
+    max-width: 36rem;
+  }
+  .hero-copy .lede {
+    color: color-mix(in srgb, var(--fg) 78%, var(--bg));
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  .seam {
+    position: absolute;
+    fill: var(--bg);
+    pointer-events: none;
+  }
+  .seam-v {
+    top: 0;
+    right: calc(-1 * clamp(36px, 5vw, 72px) + 1px);
+    width: clamp(36px, 5vw, 72px);
+    height: 100%;
+  }
+  .seam-h {
+    display: none;
+  }
+  .hero-paper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(3rem, 6vw, 5rem) var(--gutter);
+    padding-left: calc(clamp(36px, 5vw, 72px) + var(--gutter));
+  }
+
+  /* ---------- Bloques ---------- */
+  .block {
+    padding-block: clamp(4.5rem, 10vw, 8rem);
+  }
+  .head {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    max-width: 48rem;
+  }
+
+  .services {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 2px solid var(--fg);
+  }
+  .services li {
+    display: grid;
+    grid-template-columns: minmax(12rem, 1fr) 2fr 1.1fr;
+    gap: 1.5rem 2.5rem;
+    align-items: baseline;
+    padding-block: 1.6rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, var(--bg));
+  }
+  .services h3 {
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  }
+  .services .for {
+    font-size: 0.95rem;
+  }
+
+  /* Archivo → tarjeta */
+  .transform {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  .transform figure {
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .transform figcaption {
+    font-size: 0.92rem;
+  }
+  .file pre {
+    margin: 0;
+    padding: 1.3rem 1.5rem;
+    border-radius: 20px;
+    border: 1.5px solid color-mix(in srgb, var(--fg) 28%, var(--bg));
+    font-family: ui-monospace, "Cascadia Code", Menlo, monospace;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .arrow {
+    width: 80px;
+    height: 24px;
+  }
+  .card-body {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem 1.3rem 1rem 1rem;
+    border-radius: 20px;
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .card-body .mute {
+    color: color-mix(in srgb, var(--bg) 60%, var(--fg));
+  }
+  .photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--bg) 8%, var(--fg));
+  }
+  .photo :global(.photo-mark) {
+    width: 34px;
+    height: 36px;
+  }
+  .card-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .card-price {
+    font-weight: 700;
+    font-size: 1.25rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    counter-reset: s;
+  }
+  .steps li {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding-top: 1.2rem;
+    border-top: 2px solid var(--fg);
+  }
+  .num {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variation-settings: "wdth" 80;
+  }
+
+  /* Sí / no: dos mitades */
+  .fit {
+    padding-top: clamp(4.5rem, 10vw, 8rem);
+  }
+  .fit-head {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .fit-head p {
+    max-width: 48rem;
+  }
+  .fit-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .fit-yes,
+  .fit-no {
+    padding: clamp(2.5rem, 6vw, 5rem) var(--gutter);
+  }
+  .fit-yes {
+    padding-left: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+    border-top: 2px solid var(--fg);
+  }
+  .fit-no {
+    padding-right: max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter)));
+    border-top-left-radius: 48px;
+  }
+  .fit h3 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin-bottom: 1.4rem;
+  }
+  .fit ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+    font-size: 1.12rem;
+  }
+  .fit li {
+    display: grid;
+    grid-template-columns: 1.4rem 1fr;
+    gap: 0.6rem;
+  }
+  .fit-yes li::before {
+    content: "";
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-top: 0.42em;
+    border-radius: 50%;
+    background: var(--fg);
+  }
+  .fit-no li::before {
+    content: "";
+    width: 0.8rem;
+    height: 0.8rem;
+    margin-top: 0.42em;
+    border-radius: 50%;
+    border: 2px solid var(--fg);
+  }
+
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(2rem, 5vw, 4rem) clamp(2rem, 6vw, 6rem);
+  }
+  .reasons > div {
+    display: grid;
+    gap: 0.6rem;
+  }
+  .reasons h3 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+  }
+
+  .faq-block {
+    padding-top: 0;
+  }
+  .faq-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 2rem 4rem;
+    align-items: start;
+    padding-top: clamp(4rem, 8vw, 6rem);
+    border-top: 2px solid var(--fg);
+  }
+  .faq details {
+    border-bottom: 1px solid color-mix(in srgb, var(--fg) 18%, var(--bg));
+  }
+  .faq details:first-child {
+    border-top: 1px solid color-mix(in srgb, var(--fg) 18%, var(--bg));
+  }
+  .faq summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 1.2rem 2.5rem 1.2rem 0;
+    position: relative;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq summary::after {
+    content: "";
+    position: absolute;
+    right: 0.3rem;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    margin-top: -7px;
+    border-radius: 50%;
+    border: 2px solid var(--fg);
+    transition: background-color 0.2s;
+  }
+  .faq details[open] summary::after {
+    background: var(--fg);
+  }
+  .faq details p {
+    padding-bottom: 1.3rem;
+  }
+
+  .contact {
+    padding-block: clamp(4.5rem, 10vw, 8rem);
+    border-top-right-radius: clamp(48px, 8vw, 120px);
+  }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+  .contact-grid > div {
+    display: grid;
+    gap: 1.4rem;
+  }
+  .contact .mute {
+    color: color-mix(in srgb, var(--fg) 72%, var(--bg));
+  }
+  .contact :global(.contact-mark) {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    justify-self: end;
+  }
+
+  .site-footer {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .foot {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--paper) 20%, var(--ink));
+    font-size: 0.95rem;
+  }
+  .site-footer .mute {
+    color: color-mix(in srgb, var(--paper) 65%, var(--ink));
+  }
+  .foot-brand {
+    display: inline-flex;
+    gap: 0.5rem;
+    align-items: center;
+    font-weight: 700;
+  }
+  .foot-brand :global(.foot-mark) {
+    width: 22px;
+    height: 23px;
+  }
+
+  /* ---------- Pantallas medianas y móviles ---------- */
+  @media (max-width: 960px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+    .hero-ink {
+      padding: 3.5rem var(--gutter) 4.5rem;
+    }
+    .seam-v {
+      display: none;
+    }
+    .seam-h {
+      display: block;
+      left: 0;
+      bottom: -39px;
+      width: 100%;
+      height: 40px;
+      fill: var(--ink);
+    }
+    .hero-paper {
+      padding: 4.5rem var(--gutter) 3rem;
+    }
+    .services li {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .transform {
+      grid-template-columns: 1fr;
+    }
+    .arrow {
+      transform: rotate(90deg);
+      justify-self: center;
+    }
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .fit-grid {
+      grid-template-columns: 1fr;
+    }
+    .fit-yes,
+    .fit-no {
+      padding-inline: var(--gutter);
+    }
+    .fit-no {
+      border-top-left-radius: 36px;
+      border-top-right-radius: 36px;
+    }
+    .faq-wrap {
+      grid-template-columns: 1fr;
+    }
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+    .contact :global(.contact-mark) {
+      max-width: 160px;
+      justify-self: start;
+      order: -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .steps,
+    .reasons {
+      grid-template-columns: 1fr;
+    }
+    .cta-row .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

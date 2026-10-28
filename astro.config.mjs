@@ -1,5 +1,6 @@
-// @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig } from "astro/config";
 
-// https://astro.build/config
-export default defineConfig({});
+// TODO: cambia `site` por tu dominio real (se usa en las URLs absolutas y el og:image).
+export default defineConfig({
+  site: "https://whiskerstack.example",
+});

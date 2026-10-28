@@ -1,0 +1,8 @@
+[
+  { "id": "c1", "name": "Café molido 250 g", "category": "Despensa", "price": 4.5 },
+  { "id": "c2", "name": "Miel de abeja 500 ml", "category": "Despensa", "price": 6 },
+  { "id": "c3", "name": "Jabón artesanal de coco", "category": "Hogar", "price": 2.25 },
+  { "id": "c4", "name": "Vela aromática de canela", "category": "Hogar", "price": 5.75 },
+  { "id": "c5", "name": "Pan de boniato", "category": "Panadería", "price": 1.8 },
+  { "id": "c6", "name": "Galletas de mantequilla", "category": "Panadería", "price": 3.2 }
+]

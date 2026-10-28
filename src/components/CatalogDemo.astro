@@ -1,0 +1,246 @@
+---
+import items from "../data/demo-catalog.json";
+const categories = ["Todo", ...new Set(items.map((i) => i.category))];
+const fmt = (n: number) => `$${n.toFixed(2)}`;
+---
+<div class="demo" data-demo>
+  <div class="demo-head">
+    <h2 class="demo-title">Tienda de ejemplo</h2>
+    <p class="mute small">Este catálogo funciona en tu navegador. No hay servidor detrás.</p>
+  </div>
+
+  <label class="sr-only" for="demo-q">Buscar productos</label>
+  <input id="demo-q" class="search" type="search" placeholder="Buscar: café, pan, vela…" autocomplete="off" />
+
+  <div class="chips" role="group" aria-label="Filtrar por categoría">
+    {categories.map((c, i) => (
+      <button type="button" class="chip" data-cat={c} aria-pressed={i === 0 ? "true" : "false"}>{c}</button>
+    ))}
+  </div>
+
+  <ul class="items">
+    {items.map((it) => (
+      <li data-id={it.id} data-name={it.name.toLowerCase()} data-cat={it.category} data-price={it.price}>
+        <span class="name">{it.name}<span class="cat mute">{it.category}</span></span>
+        <span class="price">{fmt(it.price)}</span>
+        <button type="button" class="add" aria-label={`Añadir ${it.name}`}>
+          <span class="qty" aria-hidden="true">+</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+  <p class="empty mute small" hidden>Ningún producto coincide. Prueba otra palabra o quita el filtro.</p>
+
+  <div class="order" aria-live="polite">
+    <div class="order-top">
+      <p class="order-label small">Así llegaría tu pedido por WhatsApp</p>
+      <button type="button" class="clear small" hidden>Vaciar</button>
+    </div>
+    <pre class="bubble" data-msg>Toca + en algún producto para armar el pedido.</pre>
+  </div>
+</div>
+
+<style>
+  .demo {
+    width: 100%;
+    max-width: 460px;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .demo-title {
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+  .small {
+    font-size: 0.92rem;
+  }
+  .search {
+    width: 100%;
+    font: inherit;
+    padding: 0.75em 1.1em;
+    border-radius: 999px;
+    border: 2px solid var(--fg);
+    background: var(--bg);
+    color: var(--fg);
+  }
+  .search::placeholder {
+    color: color-mix(in srgb, var(--fg) 50%, var(--bg));
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .chip {
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.35em 0.9em;
+    border-radius: 999px;
+    border: 1.5px solid color-mix(in srgb, var(--fg) 30%, var(--bg));
+    background: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .chip[aria-pressed="true"] {
+    background: var(--fg);
+    color: var(--bg);
+    border-color: var(--fg);
+  }
+  .items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1.5px solid var(--fg);
+  }
+  .items li {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--fg) 16%, var(--bg));
+  }
+  .items li[hidden] {
+    display: none;
+  }
+  .name {
+    display: flex;
+    flex-direction: column;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .cat {
+    font-weight: 400;
+    font-size: 0.85rem;
+  }
+  .price {
+    font-variant-numeric: tabular-nums;
+  }
+  .add {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 2px solid var(--fg);
+    background: var(--bg);
+    color: var(--fg);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    position: relative;
+  }
+  .add.has {
+    background: var(--fg);
+    color: var(--bg);
+  }
+  .add.has::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--eye);
+    border: 2px solid var(--bg);
+  }
+  .order-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+  }
+  .order-label {
+    font-weight: 600;
+  }
+  .clear {
+    font: inherit;
+    font-size: 0.88rem;
+    background: none;
+    border: 0;
+    color: var(--fg);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+    cursor: pointer;
+    padding: 0.2rem 0;
+  }
+  .bubble {
+    margin: 0;
+    font: inherit;
+    font-size: 0.92rem;
+    white-space: pre-wrap;
+    padding: 0.9rem 1.1rem;
+    border-radius: 18px 18px 18px 4px;
+    background: color-mix(in srgb, var(--fg) 7%, var(--bg));
+    min-height: 3.2rem;
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-demo]");
+  if (root) {
+    const q = root.querySelector<HTMLInputElement>(".search")!;
+    const chips = [...root.querySelectorAll<HTMLButtonElement>(".chip")];
+    const rows = [...root.querySelectorAll<HTMLLIElement>(".items li")];
+    const empty = root.querySelector<HTMLElement>(".empty")!;
+    const msg = root.querySelector<HTMLElement>("[data-msg]")!;
+    const clear = root.querySelector<HTMLButtonElement>(".clear")!;
+    const cart = new Map<string, number>();
+    let cat = "Todo";
+
+    const norm = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase();
+
+    const filter = () => {
+      const term = norm(q.value.trim());
+      let shown = 0;
+      for (const r of rows) {
+        const ok = (cat === "Todo" || r.dataset.cat === cat) && norm(r.dataset.name!).includes(term);
+        r.hidden = !ok;
+        if (ok) shown++;
+      }
+      empty.hidden = shown > 0;
+    };
+
+    const render = () => {
+      let total = 0;
+      const lines: string[] = [];
+      for (const r of rows) {
+        const n = cart.get(r.dataset.id!) ?? 0;
+        const btn = r.querySelector<HTMLButtonElement>(".add")!;
+        const label = r.querySelector(".name")!.firstChild!.textContent!.trim();
+        btn.classList.toggle("has", n > 0);
+        btn.querySelector(".qty")!.textContent = n > 0 ? String(n) : "+";
+        btn.setAttribute("aria-label", n > 0 ? `Añadir otro ${label} (llevas ${n})` : `Añadir ${label}`);
+        if (n > 0) {
+          const sub = n * Number(r.dataset.price);
+          total += sub;
+          lines.push(`• ${n} × ${label} — $${sub.toFixed(2)}`);
+        }
+      }
+      clear.hidden = lines.length === 0;
+      msg.textContent = lines.length
+        ? `Hola, quiero hacer este pedido:\n${lines.join("\n")}\nTotal: $${total.toFixed(2)}`
+        : "Toca + en algún producto para armar el pedido.";
+    };
+
+    q.addEventListener("input", filter);
+    clear.addEventListener("click", () => {
+      cart.clear();
+      render();
+    });
+    chips.forEach((c) =>
+      c.addEventListener("click", () => {
+        cat = c.dataset.cat!;
+        chips.forEach((x) => x.setAttribute("aria-pressed", String(x === c)));
+        filter();
+      }),
+    );
+    rows.forEach((r) =>
+      r.querySelector(".add")!.addEventListener("click", () => {
+        const id = r.dataset.id!;
+        cart.set(id, Math.min((cart.get(id) ?? 0) + 1, 9));
+        render();
+      }),
+    );
+  }
+</script>

@@ -1,0 +1,18 @@
+---
+import { LOGO_PATH, LOGO_TRANSFORM, LOGO_VIEWBOX } from "../lib/logo";
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className, title } = Astro.props;
+---
+<svg
+  class={className}
+  viewBox={LOGO_VIEWBOX}
+  role={title ? "img" : undefined}
+  aria-hidden={title ? undefined : "true"}
+  aria-label={title}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g transform={LOGO_TRANSFORM}><path fill="currentColor" d={LOGO_PATH} /></g>
+</svg>

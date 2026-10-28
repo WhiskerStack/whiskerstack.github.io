@@ -1,0 +1,135 @@
+---
+import Logo from "./Logo.astro";
+import { site } from "../config/site";
+const links = [
+  { href: "#servicios", label: "Servicios" },
+  { href: "#como-funciona", label: "Cómo funciona" },
+  { href: "#alcance", label: "Qué cabe" },
+  { href: "#preguntas", label: "Preguntas" },
+];
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/" aria-label={`${site.name}, inicio`}>
+      <Logo class="brand-mark" />
+      <span>{site.name}</span>
+    </a>
+    <nav aria-label="Secciones">
+      <ul>
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="actions">
+      <button class="theme" type="button" aria-label="Invertir colores" title="Invertir colores">
+        <Logo class="theme-mark" />
+      </button>
+      <a class="btn small" href="#contacto">Contactar</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    min-height: 76px;
+  }
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+  .brand :global(.brand-mark) {
+    width: 34px;
+    height: 36px;
+  }
+  nav {
+    margin-left: auto;
+  }
+  nav ul {
+    display: flex;
+    gap: 1.6rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    text-decoration: none;
+    font-weight: 500;
+  }
+  nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.3em;
+    text-decoration-thickness: 2px;
+  }
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .theme {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 2px solid color-mix(in srgb, var(--fg) 18%, var(--bg));
+    background: var(--bg);
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .theme:hover {
+    border-color: var(--fg);
+  }
+  .theme :global(.theme-mark) {
+    width: 24px;
+    height: 25px;
+    transition: transform 0.6s cubic-bezier(0.6, 0, 0.2, 1);
+  }
+  :global(:root[data-flipped]) .theme :global(.theme-mark) {
+    transform: rotate(180deg);
+  }
+  .btn.small {
+    padding: 0.55em 1.1em;
+  }
+  @media (max-width: 860px) {
+    nav {
+      display: none;
+    }
+    .bar {
+      gap: 0.75rem;
+    }
+    .actions {
+      margin-left: auto;
+      gap: 0.5rem;
+    }
+  }
+  @media (max-width: 380px) {
+    .brand span {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const btn = document.querySelector<HTMLButtonElement>(".theme");
+  const isDark = () =>
+    root.dataset.theme
+      ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+  btn?.addEventListener("click", () => {
+    const next = isDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    if (root.hasAttribute("data-flipped")) root.removeAttribute("data-flipped");
+    else root.setAttribute("data-flipped", "");
+    try {
+      localStorage.setItem("ws-theme", next);
+    } catch {}
+  });
+</script>

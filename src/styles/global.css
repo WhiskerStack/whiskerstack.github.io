@@ -1,0 +1,173 @@
+@import "@fontsource-variable/bricolage-grotesque";
+
+/* El logo son dos gatos, uno negro y uno blanco. El sitio usa solo esas dos
+   tintas e invierte bloques completos (.inv), igual que el logo. El modo oscuro
+   intercambia las dos tintas, así que todo se invierte de forma coherente. */
+:root {
+  --ink: #000;
+  --paper: #fff;
+  --eye: #f2b705; /* ojo de gato: solo rellenos pequeños, nunca texto sobre blanco */
+
+  --bg: var(--paper);
+  --fg: var(--ink);
+
+  --font: "Bricolage Grotesque Variable", system-ui, sans-serif;
+  --measure: 62ch;
+  --gutter: clamp(16px, 4vw, 48px);
+  --max: 1200px;
+
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --ink: #fff;
+  --paper: #000;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ink: #fff;
+    --paper: #000;
+    color-scheme: dark;
+  }
+}
+
+/* Bloque invertido: reutiliza las mismas variables con los papeles cambiados. */
+.inv {
+  --bg: var(--ink);
+  --fg: var(--paper);
+}
+
+* ,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.inv,
+section,
+header,
+footer {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.mute {
+  color: color-mix(in srgb, var(--fg) 64%, var(--bg));
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+h1 {
+  font-size: clamp(2.6rem, 6.4vw, 5.2rem);
+  font-variation-settings: "wdth" 85;
+  letter-spacing: -0.04em;
+}
+h2 {
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+}
+h3 {
+  font-size: 1.35rem;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+p {
+  margin: 0;
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.lede {
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.5;
+}
+
+/* Botones: píldora redonda, como el contorno del logo. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.85em 1.4em;
+  border-radius: 999px;
+  border: 2px solid var(--fg);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--fg);
+  color: var(--bg);
+  transition: background-color 0.15s, color 0.15s;
+}
+.btn:hover {
+  background: var(--bg);
+  color: var(--fg);
+}
+.btn.ghost {
+  background: transparent;
+  color: var(--fg);
+}
+.btn.ghost:hover {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+:focus-visible {
+  outline: 3px solid var(--eye);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--bg);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
