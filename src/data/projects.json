@@ -1,5 +1,14 @@
 [
   {
+    "slug": "lanuberoja",
+    "name": "La Nube Roja",
+    "url": "https://whiskerstack.github.io/la_nube_roja",
+    "kind": "Comida y bebida Cubana",
+    "category": "Catálogo",
+    "description": "Demostración del posible catálogo para un restaurante de comida y bebida cubana.",
+    "featured": true
+  },
+  {
     "slug": "ryoiki-tenkai-papercraft",
     "name": "Ryoiki Tenkai",
     "url": "https://whiskerstack.github.io/ryoiki-tenkai-papercraft",
